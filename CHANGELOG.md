@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.17.0] - 2026-03-16
+
+### Added
+
+- **General**: Added `.devcontainer/` with a multi-stage `Dockerfile` and `devcontainer.json` for a reproducible VS Code Dev Container. Stage 1 builds Boost 1.90.0, abseil-cpp 20240722.1, and Protobuf v34.0 from source; stage 2 ships a `debian:bookworm-slim` image with Clang/LLVM 21, CMake 4.2.3, and ccache. Supports `linux/amd64` and `linux/arm64` via `TARGETARCH`. A named Docker volume (`dds-ccache`) keeps ccache warm across container rebuilds.
+
+### Fixed
+
+- **dds-misc-lib**: Replaced self-assignment `_filterForRealUserID = _filterForRealUserID` with `(void)_filterForRealUserID` in `Process.h` to fix `-Wself-assign` warning.
+- **dds-misc-lib**: Replaced deprecated `boost::asio::deadline_timer` / `boost::posix_time` with `boost::asio::system_timer` / `std::chrono` in `Process.h` to fix `-Wdeprecated-declarations` warning.
+- **dds-protocol-lib**: Replaced deprecated `boost::asio::deadline_timer` with `boost::asio::system_timer` in `BaseChannelImpl.h` to fix `-Wdeprecated-declarations` warning.
+- **dds-commander**: Cast return value of Protobuf `UnpackTo()` to `void` to fix `-Wunused-result` warning.
+- **dds-submit-slurm**: Cast return value of Protobuf `PackFrom()` to `void` to fix `-Wunused-result` warning.
+- **dds-tools-lib**: Removed redundant `#include <boost/process.hpp>` from `TestSession.cpp`. On Boost 1.90 the top-level header pulls in `boost/process/v2` static initializers that require a compiled `libboost_process` (v2) library, causing linker errors. The `bp` namespace was already provided by `Process.h` via `boost/process/v1.hpp`.
+
 ## [3.16.0] - 2025-10-09
 
 ### Added

@@ -318,7 +318,7 @@ int main(int argc, char* argv[])
                                 *protoSubmitInfo.mutable_submission_timestamp() =
                                     TimeUtil::SecondsToTimestamp(time(NULL));
                                 protoSubmitInfo.set_rms_plugin("dds-submit-slurm");
-                                protoSubmitInfo.mutable_rms_plugin_data()->PackFrom(protoSlurmSubmitInfo);
+                                (void)protoSubmitInfo.mutable_rms_plugin_data()->PackFrom(protoSlurmSubmitInfo);
 
                                 // Write submit info
                                 fs::path pathSubmitInfoFile(pathWorkDirLocalFiles);

@@ -1,5 +1,31 @@
 # Release Notes
 
+## [3.17.0] - 2026-03-16
+
+### 🐛 Bug Fixes
+
+#### Build Warning Fixes
+
+- **Self-assignment warning in `Process.h`**: Replaced the no-op self-assignment `_filterForRealUserID = _filterForRealUserID` with `(void)_filterForRealUserID` to silence the unused-argument warning cleanly (`-Wself-assign`)
+- **Deprecated `boost::asio::deadline_timer`**: Replaced all uses of the deprecated `deadline_timer` / `boost::posix_time` API with `boost::asio::system_timer` / `std::chrono` in `Process.h` and `BaseChannelImpl.h` (`-Wdeprecated-declarations`)
+- **`[[nodiscard]]` warnings in Protobuf calls**: Cast the return values of `UnpackTo()` (dds-commander) and `PackFrom()` (dds-submit-slurm) to `void` to suppress `-Wunused-result`
+
+#### Linker Error Fix — Boost.Process v2 Static Initializers
+
+- **`dds_tools_lib-session-tests` link failure**: Removed a redundant `#include <boost/process.hpp>` from `TestSession.cpp`. On Boost 1.90 the top-level header pulls in `boost/process/v2/error.hpp` and `boost/process/v2/shell.hpp`, which contain static initializers that require the compiled `libboost_process` (v2) library — a library that is not linked in this project. The `bp` namespace alias was already provided by `Process.h` via `boost/process/v1.hpp`.
+
+### 🔧 Build Infrastructure
+
+#### Dev Container Support
+
+- **New `.devcontainer/` configuration**: Added a reproducible VS Code Dev Container based on `debian:bookworm-slim` with a multi-stage Dockerfile
+  - **Stage 1 (builder)**: Compiles Boost 1.90.0, abseil-cpp 20240722.1, and Protobuf v34.0 from source
+  - **Stage 2 (dev)**: Ships only the pre-built artifacts alongside Clang/LLVM 21 (compiler, clangd, clang-format, lld), CMake 4.2.3, ccache, git and make
+  - **Supports `linux/amd64` and `linux/arm64`** via `TARGETARCH`
+  - **ccache** persisted in a named Docker volume (`dds-ccache`) for fast incremental rebuilds
+  - **`postCreateCommand`** automatically runs CMake configure (with ccache launchers) on first container open
+  - **VS Code extensions**: `vscode-clangd` (replaces the C/C++ IntelliSense engine) and `cmake-tools` pre-installed
+
 ## [3.16.0] - 2025-10-09
 
 ### 🎉 New Features
@@ -19,7 +45,7 @@
 - **Job Submission Failure**: Fixed critical bug in SLURM plugin that caused job submissions to fail with "No partition specified or system default partition" error when using lightweight mode
 - **Root Cause**: The job script template incorrectly placed executable validation code before #SBATCH directives, violating SLURM's parsing requirements. SLURM stops processing #SBATCH options when it encounters the first executable line, causing all subsequent directives (including `--partition`) to be ignored
 - **Template Bug**: The placeholder `#DDS_LIGHTWEIGHT_VALIDATION` appeared in both a comment line and the code section. The `boost::replace_all()` function replaced both occurrences, breaking the comment syntax and injecting executable code before #SBATCH directives
-- **Resolution**: 
+- **Resolution**:
   - Removed lightweight validation code from the job script template entirely
   - Eliminated blank lines between #SBATCH directive placeholders
   - Validation logic moved to worker nodes where it's actually needed (DDSWorker.sh)

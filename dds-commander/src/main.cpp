@@ -182,7 +182,7 @@ int main(int argc, char* argv[])
                     return 1;
                 }
                 dds::protocol::SlurmSubmitInfo protoSlurmSubmitInfo;
-                protoSubmitInfo.mutable_rms_plugin_data()->UnpackTo(&protoSlurmSubmitInfo);
+                (void)protoSubmitInfo.mutable_rms_plugin_data()->UnpackTo(&protoSlurmSubmitInfo);
 
                 if (protoSlurmSubmitInfo.slurm_job_id_size() == 0)
                 {

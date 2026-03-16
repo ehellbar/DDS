@@ -223,7 +223,7 @@ namespace dds
         {
             typedef std::deque<CProtocolMessage::protocolMessagePtr_t> protocolMessagePtrQueue_t;
             typedef std::vector<boost::asio::mutable_buffer> protocolMessageBuffer_t;
-            typedef std::shared_ptr<boost::asio::deadline_timer> deadlineTimerPtr_t;
+            typedef std::shared_ptr<boost::asio::system_timer> deadlineTimerPtr_t;
 
           public:
             typedef std::shared_ptr<T> connectionPtr_t;
@@ -250,7 +250,7 @@ namespace dds
                 , m_binaryAttachmentMap()
                 , m_binaryAttachmentMutex()
                 , m_deadlineTimer(
-                      std::make_shared<boost::asio::deadline_timer>(_service, boost::posix_time::milliseconds(1000)))
+                      std::make_shared<boost::asio::system_timer>(_service, std::chrono::milliseconds(1000)))
                 , m_isShuttingDown(false)
             {
                 try

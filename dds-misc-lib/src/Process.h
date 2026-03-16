@@ -24,7 +24,7 @@
 #include <memory>
 // BOOST
 #include <boost/asio.hpp>
-#include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/system_timer.hpp>
 #include <boost/filesystem/operations.hpp>
 #if __has_include(<boost/process/v1.hpp>)
 #include <boost/process/v1.hpp>
@@ -420,7 +420,7 @@ namespace dds::misc
         CFindProcess::getAllPIDsForProcessName(_Srv, &container, _filterForRealUserID);
         copy(container.begin(), container.end(), std::back_inserter(retVal));
 #else
-        _filterForRealUserID = _filterForRealUserID; // silence the warning of unused arg
+        (void)_filterForRealUserID; // silence the warning of unused arg
         CProcList::ProcContainer_t pids;
         CProcList::GetProcList(&pids);
 
@@ -537,7 +537,7 @@ namespace dds::misc
             boost::asio::streambuf outBuf;
             boost::asio::streambuf errBuf;
 
-            boost::asio::deadline_timer watchdog{ ios, boost::posix_time::seconds(_Timeout.count()) };
+            boost::asio::system_timer watchdog{ ios, std::chrono::seconds(_Timeout.count()) };
 
             bp::child c(smartCmd,
                         bp::std_in.close(),
