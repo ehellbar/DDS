@@ -26,12 +26,21 @@
 #include <boost/asio.hpp>
 #include <boost/asio/system_timer.hpp>
 #include <boost/filesystem/operations.hpp>
+// Suppress warnings from Boost.Process v1 headers (deprecated codecvt_utf8, unused parameters)
+#if defined(__clang__) || defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 #if __has_include(<boost/process/v1.hpp>)
 #include <boost/process/v1.hpp>
 namespace bp = boost::process::v1;
 #else
 #include <boost/process.hpp>
 namespace bp = boost::process;
+#endif
+#if defined(__clang__) || defined(__GNUC__)
+#pragma GCC diagnostic pop
 #endif
 // DDS
 #include "CustomIterator.h"
