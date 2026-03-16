@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(test_MiscCommon_execute_dds_daemonize)
     fs::path logFile{ tmpDir };
     logFile /= "hostname.out.log";
     BOOST_TEST(fs::exists(logFile));
-    BOOST_TEST(fs::file_size(logFile) > 0);
+    BOOST_TEST(fs::file_size(logFile) > 0u);
 }
 
 //=============================================================================
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(test_MiscCommon_excute_in_grandchildren)
     // let process finish
     this_thread::sleep_for(std::chrono::seconds(3));
     BOOST_TEST(fs::exists(outputfile));
-    BOOST_TEST(fs::file_size(outputfile) > 0);
+    BOOST_TEST(fs::file_size(outputfile) > 0u);
 }
 
 BOOST_AUTO_TEST_SUITE_END();
