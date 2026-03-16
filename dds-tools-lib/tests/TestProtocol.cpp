@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(test_dds_tools_protocol_submit_response)
     ss << data;
 
     BOOST_CHECK(data == testData);
-    BOOST_CHECK_EQUAL(data.m_jobIDs.size(), 3);
+    BOOST_CHECK_EQUAL(data.m_jobIDs.size(), 3u);
     BOOST_CHECK_EQUAL(data.m_jobIDs[0], "123.job");
     BOOST_CHECK_EQUAL(data.m_jobIDs[1], "124.job");
     BOOST_CHECK_EQUAL(data.m_jobIDs[2], "125.job");

@@ -185,10 +185,10 @@ BOOST_AUTO_TEST_CASE(test_dds_scheduler_2)
 
     topo.getDifference(newTopo, removedTasks, removedCollections, addedTasks, addedCollections);
 
-    BOOST_CHECK(removedTasks.size() == 9);
-    BOOST_CHECK(removedCollections.size() == 4);
-    BOOST_CHECK(addedTasks.size() == 11);
-    BOOST_CHECK(addedCollections.size() == 5);
+    BOOST_CHECK(removedTasks.size() == 9u);
+    BOOST_CHECK(removedCollections.size() == 4u);
+    BOOST_CHECK(addedTasks.size() == 11u);
+    BOOST_CHECK(addedCollections.size() == 5u);
 
     CScheduler scheduler;
     BOOST_CHECK_NO_THROW(scheduler.makeSchedule(newTopo, weakAgents, addedTasks, addedCollections));

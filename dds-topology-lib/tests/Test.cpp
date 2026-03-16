@@ -290,16 +290,16 @@ void test_topology_parser_xml(const string& _filename)
     {
         BOOST_CHECK(topology.getFilepath() == "");
     }
-    BOOST_CHECK(topology.getHash() == 3727270847);
+    BOOST_CHECK(topology.getHash() == 3727270847u);
     CTopoGroup::Ptr_t main = topology.getMainGroup();
 
     BOOST_CHECK(main != nullptr);
 
-    BOOST_CHECK(main->getNofTasks() == 22);
-    BOOST_CHECK(main->getTotalNofTasks() == 220);
-    BOOST_CHECK(main->getN() == 1);
+    BOOST_CHECK(main->getNofTasks() == 22u);
+    BOOST_CHECK(main->getTotalNofTasks() == 220u);
+    BOOST_CHECK(main->getN() == 1u);
     BOOST_CHECK(main->getName() == "main");
-    BOOST_CHECK(main->getNofElements() == 4);
+    BOOST_CHECK(main->getNofElements() == 4u);
     BOOST_CHECK(main->getParent() == nullptr);
     BOOST_CHECK(main->getPath() == "main");
     BOOST_CHECK_THROW(main->getElement(4), std::out_of_range);
@@ -309,22 +309,22 @@ void test_topology_parser_xml(const string& _filename)
     BOOST_CHECK(element1->getType() == CTopoBase::EType::TASK);
     BOOST_CHECK(element1->getParent() == main.get());
     BOOST_CHECK(element1->getPath() == "main/task1");
-    BOOST_CHECK(element1->getNofTasks() == 1);
-    BOOST_CHECK(element1->getTotalNofTasks() == 1);
+    BOOST_CHECK(element1->getNofTasks() == 1u);
+    BOOST_CHECK(element1->getTotalNofTasks() == 1u);
     CTopoTask::Ptr_t casted1 = dynamic_pointer_cast<CTopoTask>(element1);
-    BOOST_CHECK(casted1->getNofProperties() == 2);
+    BOOST_CHECK(casted1->getNofProperties() == 2u);
     BOOST_CHECK(casted1->getExe() == "app1 -l -n");
     BOOST_CHECK(casted1->getEnv() == "env1");
     BOOST_CHECK(casted1->isExeReachable() == true);
     BOOST_CHECK(casted1->isEnvReachable() == false);
-    BOOST_CHECK(casted1->getNofRequirements() == 1);
+    BOOST_CHECK(casted1->getNofRequirements() == 1u);
     CTopoRequirement::Ptr_t requirement = casted1->getRequirements()[0];
     BOOST_CHECK(requirement->getName() == "requirement1");
     BOOST_CHECK(requirement->getType() == CTopoBase::EType::REQUIREMENT);
     BOOST_CHECK(requirement->getParent() == element1.get());
     BOOST_CHECK(requirement->getValue() == ".+.gsi.de");
     BOOST_CHECK(requirement->getRequirementType() == CTopoRequirement::EType::HostName);
-    BOOST_CHECK(casted1->getNofTriggers() == 2);
+    BOOST_CHECK(casted1->getNofTriggers() == 2u);
     CTopoTrigger::Ptr_t trigger = casted1->getTriggers()[0];
     BOOST_CHECK(trigger->getName() == "trigger1");
     BOOST_CHECK(trigger->getType() == CTopoBase::EType::TRIGGER);
@@ -338,10 +338,10 @@ void test_topology_parser_xml(const string& _filename)
     BOOST_CHECK(element2->getType() == CTopoBase::EType::COLLECTION);
     BOOST_CHECK(element2->getParent() == main.get());
     BOOST_CHECK(element2->getPath() == "main/collection1");
-    BOOST_CHECK(element2->getNofTasks() == 4);
-    BOOST_CHECK(element2->getTotalNofTasks() == 4);
+    BOOST_CHECK(element2->getNofTasks() == 4u);
+    BOOST_CHECK(element2->getTotalNofTasks() == 4u);
     CTopoCollection::Ptr_t casted2 = dynamic_pointer_cast<CTopoCollection>(element2);
-    BOOST_CHECK(casted2->getNofElements() == 4);
+    BOOST_CHECK(casted2->getNofElements() == 4u);
     BOOST_CHECK_THROW(casted2->getElement(4), std::out_of_range);
 
     const auto& casted2_elements = casted2->getElements();
@@ -355,45 +355,45 @@ void test_topology_parser_xml(const string& _filename)
     BOOST_CHECK(element3->getType() == CTopoBase::EType::GROUP);
     BOOST_CHECK(element3->getParent() == main.get());
     BOOST_CHECK(element3->getPath() == "main/group1");
-    BOOST_CHECK(element3->getNofTasks() == 8);
-    BOOST_CHECK(element3->getTotalNofTasks() == 80);
+    BOOST_CHECK(element3->getNofTasks() == 8u);
+    BOOST_CHECK(element3->getTotalNofTasks() == 80u);
     CTopoGroup::Ptr_t casted3 = dynamic_pointer_cast<CTopoGroup>(element3);
-    BOOST_CHECK(casted3->getNofElements() == 3);
+    BOOST_CHECK(casted3->getNofElements() == 3u);
     BOOST_CHECK_THROW(casted3->getElement(3), std::out_of_range);
-    BOOST_CHECK(casted3->getN() == 10);
+    BOOST_CHECK(casted3->getN() == 10u);
 
     CTopoElement::Ptr_t element4 = main->getElement(3);
     BOOST_CHECK(element4->getName() == "group2");
     BOOST_CHECK(element4->getType() == CTopoBase::EType::GROUP);
     BOOST_CHECK(element4->getParent() == main.get());
     BOOST_CHECK(element4->getPath() == "main/group2");
-    BOOST_CHECK(element4->getNofTasks() == 9);
-    BOOST_CHECK(element4->getTotalNofTasks() == 135);
+    BOOST_CHECK(element4->getNofTasks() == 9u);
+    BOOST_CHECK(element4->getTotalNofTasks() == 135u);
     CTopoGroup::Ptr_t casted4 = dynamic_pointer_cast<CTopoGroup>(element4);
-    BOOST_CHECK(casted4->getNofElements() == 4);
+    BOOST_CHECK(casted4->getNofElements() == 4u);
     BOOST_CHECK_THROW(casted4->getElement(4), std::out_of_range);
-    BOOST_CHECK(casted4->getN() == 15);
+    BOOST_CHECK(casted4->getN() == 15u);
 
     CTopoCollection::Ptr_t casted5 = dynamic_pointer_cast<CTopoCollection>(casted4->getElement(2));
     BOOST_CHECK(casted5->getName() == "collection1");
     BOOST_CHECK(casted5->getType() == CTopoBase::EType::COLLECTION);
     BOOST_CHECK(casted5->getParent() == casted4.get());
     BOOST_CHECK(casted5->getPath() == "main/group2/collection1");
-    BOOST_CHECK(casted5->getNofTasks() == 4);
-    BOOST_CHECK(casted5->getTotalNofTasks() == 4);
-    BOOST_CHECK(casted5->getNofElements() == 4);
+    BOOST_CHECK(casted5->getNofTasks() == 4u);
+    BOOST_CHECK(casted5->getTotalNofTasks() == 4u);
+    BOOST_CHECK(casted5->getNofElements() == 4u);
     BOOST_CHECK(casted5->getRequirements()[0]->getName() == "requirement1");
     BOOST_CHECK_THROW(casted5->getElement(4), std::out_of_range);
-    BOOST_CHECK(casted5->getTotalCounter() == 15);
+    BOOST_CHECK(casted5->getTotalCounter() == 15u);
 
     CTopoTask::Ptr_t casted6 = dynamic_pointer_cast<CTopoTask>(casted5->getElement(0));
     BOOST_CHECK(casted6->getName() == "task1");
     BOOST_CHECK(casted6->getType() == CTopoBase::EType::TASK);
     BOOST_CHECK(casted6->getParent() == casted5.get());
     BOOST_CHECK(casted6->getPath() == "main/group2/collection1/task1");
-    BOOST_CHECK(casted6->getNofTasks() == 1);
-    BOOST_CHECK(casted6->getTotalNofTasks() == 1);
-    BOOST_CHECK(casted6->getNofProperties() == 2);
+    BOOST_CHECK(casted6->getNofTasks() == 1u);
+    BOOST_CHECK(casted6->getTotalNofTasks() == 1u);
+    BOOST_CHECK(casted6->getNofProperties() == 2u);
     BOOST_CHECK(casted6->getExe() == "app1 -l -n");
     BOOST_CHECK(casted6->getEnv() == "env1");
     BOOST_CHECK(casted6->isExeReachable() == true);
@@ -401,7 +401,7 @@ void test_topology_parser_xml(const string& _filename)
 
     // Test getElementsByType and getTotalCounter
     CTopoElement::PtrVector_t elements1 = main->getElementsByType(CTopoBase::EType::TASK);
-    BOOST_CHECK(elements1.size() == 4);
+    BOOST_CHECK(elements1.size() == 4u);
     for (const auto& v : elements1)
     {
         BOOST_CHECK(v->getType() == CTopoBase::EType::TASK);
@@ -409,22 +409,22 @@ void test_topology_parser_xml(const string& _filename)
     CTopoTask::Ptr_t castedTask = dynamic_pointer_cast<CTopoTask>(elements1[0]);
     BOOST_CHECK(castedTask->getName() == "task1");
     BOOST_CHECK(castedTask->getPath() == "main/task1");
-    BOOST_CHECK(castedTask->getTotalCounter() == 1);
+    BOOST_CHECK(castedTask->getTotalCounter() == 1u);
     castedTask = dynamic_pointer_cast<CTopoTask>(elements1[1]);
     BOOST_CHECK(castedTask->getName() == "task1");
     BOOST_CHECK(castedTask->getPath() == "main/group1/task1");
-    BOOST_CHECK(castedTask->getTotalCounter() == 10);
+    BOOST_CHECK(castedTask->getTotalCounter() == 10u);
     castedTask = dynamic_pointer_cast<CTopoTask>(elements1[2]);
     BOOST_CHECK(castedTask->getName() == "task3");
     BOOST_CHECK(castedTask->getPath() == "main/group2/task3");
-    BOOST_CHECK(castedTask->getTotalCounter() == 15);
+    BOOST_CHECK(castedTask->getTotalCounter() == 15u);
     castedTask = dynamic_pointer_cast<CTopoTask>(elements1[3]);
     BOOST_CHECK(castedTask->getName() == "task4");
     BOOST_CHECK(castedTask->getPath() == "main/group2/task4");
-    BOOST_CHECK(castedTask->getTotalCounter() == 15);
+    BOOST_CHECK(castedTask->getTotalCounter() == 15u);
 
     CTopoElement::PtrVector_t elements2 = main->getElementsByType(CTopoBase::EType::COLLECTION);
-    BOOST_CHECK(elements2.size() == 5);
+    BOOST_CHECK(elements2.size() == 5u);
     for (const auto& v : elements2)
     {
         BOOST_CHECK(v->getType() == CTopoBase::EType::COLLECTION);
@@ -432,23 +432,23 @@ void test_topology_parser_xml(const string& _filename)
     CTopoCollection::Ptr_t castedCollection = dynamic_pointer_cast<CTopoCollection>(elements2[0]);
     BOOST_CHECK(castedCollection->getName() == "collection1");
     BOOST_CHECK(castedCollection->getPath() == "main/collection1");
-    BOOST_CHECK(castedCollection->getTotalCounter() == 1);
+    BOOST_CHECK(castedCollection->getTotalCounter() == 1u);
     castedCollection = dynamic_pointer_cast<CTopoCollection>(elements2[1]);
     BOOST_CHECK(castedCollection->getName() == "collection1");
     BOOST_CHECK(castedCollection->getPath() == "main/group1/collection1");
-    BOOST_CHECK(castedCollection->getTotalCounter() == 10);
+    BOOST_CHECK(castedCollection->getTotalCounter() == 10u);
     castedCollection = dynamic_pointer_cast<CTopoCollection>(elements2[2]);
     BOOST_CHECK(castedCollection->getName() == "collection2");
     BOOST_CHECK(castedCollection->getPath() == "main/group1/collection2");
-    BOOST_CHECK(castedCollection->getTotalCounter() == 10);
+    BOOST_CHECK(castedCollection->getTotalCounter() == 10u);
     castedCollection = dynamic_pointer_cast<CTopoCollection>(elements2[3]);
     BOOST_CHECK(castedCollection->getName() == "collection1");
     BOOST_CHECK(castedCollection->getPath() == "main/group2/collection1");
-    BOOST_CHECK(castedCollection->getTotalCounter() == 15);
+    BOOST_CHECK(castedCollection->getTotalCounter() == 15u);
     castedCollection = dynamic_pointer_cast<CTopoCollection>(elements2[4]);
     BOOST_CHECK(castedCollection->getName() == "collection2");
     BOOST_CHECK(castedCollection->getPath() == "main/group2/collection2");
-    BOOST_CHECK(castedCollection->getTotalCounter() == 15);
+    BOOST_CHECK(castedCollection->getTotalCounter() == 15u);
 
     auto b1(topology.getRequiredNofAgents(1) == pair<size_t, size_t>(55, 4));
     BOOST_CHECK_MESSAGE(b1, "Compare getRequiredNofAgents(1)");
@@ -953,9 +953,9 @@ void test_create_topo_1(T& _input1)
     // Save the topology
     creator.save("new_topology_test_creator_1.xml");
 
-    BOOST_CHECK(creator.getMainGroup()->getNofElements() == 5);
-    BOOST_CHECK(creator.getMainGroup()->getNofTasks() == 26);
-    BOOST_CHECK(creator.getMainGroup()->getTotalNofTasks() == 224);
+    BOOST_CHECK(creator.getMainGroup()->getNofElements() == 5u);
+    BOOST_CHECK(creator.getMainGroup()->getNofTasks() == 26u);
+    BOOST_CHECK(creator.getMainGroup()->getTotalNofTasks() == 224u);
 }
 
 BOOST_AUTO_TEST_CASE(test_dds_create_topo_1)
@@ -993,9 +993,9 @@ void test_create_topo_2(T& _input1, T& _input2)
     // Save the topology to a file
     creator.save("new_topology_test_creator_3.xml");
 
-    BOOST_CHECK(creator.getMainGroup()->getNofElements() == 3);
-    BOOST_CHECK(creator.getMainGroup()->getNofTasks() == 18);
-    BOOST_CHECK(creator.getMainGroup()->getTotalNofTasks() == 63);
+    BOOST_CHECK(creator.getMainGroup()->getNofElements() == 3u);
+    BOOST_CHECK(creator.getMainGroup()->getNofTasks() == 18u);
+    BOOST_CHECK(creator.getMainGroup()->getTotalNofTasks() == 63u);
 }
 
 BOOST_AUTO_TEST_CASE(test_dds_create_topo_2)
@@ -1016,7 +1016,7 @@ BOOST_AUTO_TEST_CASE(test_dds_read_vars)
     // Initialize topology creator with existing topology
     CTopoVars vars;
     vars.initFromXML("topology_test_1.xml");
-    BOOST_CHECK(vars.getMap().size() == 3);
+    BOOST_CHECK(vars.getMap().size() == 3u);
     auto found = vars.getMap().find("nofGroups");
     BOOST_CHECK(found != vars.getMap().end());
 }
@@ -1056,11 +1056,11 @@ BOOST_AUTO_TEST_CASE(test_dds_topology_assets)
     BOOST_CHECK(element1->getType() == CTopoBase::EType::TASK);
     BOOST_CHECK(element1->getParent() == main.get());
     BOOST_CHECK(element1->getPath() == "main/task1");
-    BOOST_CHECK(element1->getNofTasks() == 1);
-    BOOST_CHECK(element1->getTotalNofTasks() == 1);
+    BOOST_CHECK(element1->getNofTasks() == 1u);
+    BOOST_CHECK(element1->getTotalNofTasks() == 1u);
     CTopoTask::Ptr_t casted1 = dynamic_pointer_cast<CTopoTask>(element1);
     // Assets
-    BOOST_CHECK(casted1->getNofAssets() == 2);
+    BOOST_CHECK(casted1->getNofAssets() == 2u);
     CTopoAsset::Ptr_t asset = casted1->getAssets()[0];
     BOOST_CHECK(asset->getName() == "asset1");
     BOOST_CHECK(asset->getAssetType() == CTopoAsset::EType::Inline);

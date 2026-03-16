@@ -184,7 +184,7 @@ void checkIdleSlots(CSession& _session, size_t _numSlots)
         SAgentCountRequest::request_t(), agentCountInfo, kTimeout, &std::cout));
     BOOST_CHECK_EQUAL(agentCountInfo.m_activeSlotsCount, _numSlots);
     BOOST_CHECK_EQUAL(agentCountInfo.m_idleSlotsCount, _numSlots);
-    BOOST_CHECK_EQUAL(agentCountInfo.m_executingSlotsCount, 0);
+    BOOST_CHECK_EQUAL(agentCountInfo.m_executingSlotsCount, 0u);
 }
 
 void checkIdleSlots(vector<CSession>& _sessions, size_t _numSlots)
@@ -631,7 +631,7 @@ BOOST_AUTO_TEST_CASE(test_dds_tools_agentCommand)
     BOOST_CHECK_NO_THROW(
         session.syncSendRequest<SAgentInfoRequest>(SAgentInfoRequest::request_t(), agentInfo, kTimeout, &std::cout));
 
-    BOOST_CHECK(agentInfo.size() > 0);
+    BOOST_CHECK(agentInfo.size() > 0u);
 
     // take the first and shut it down
     uint64_t agentID = agentInfo.at(0).m_agentID;
@@ -646,7 +646,7 @@ BOOST_AUTO_TEST_CASE(test_dds_tools_agentCommand)
     BOOST_CHECK_NO_THROW(
         session.syncSendRequest<SAgentInfoRequest>(SAgentInfoRequest::request_t(), agentInfo, kTimeout, &std::cout));
 
-    BOOST_CHECK(agentInfo.size() == 0);
+    BOOST_CHECK(agentInfo.size() == 0u);
 
     session.shutdown();
 }
