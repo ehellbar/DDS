@@ -43,7 +43,7 @@ jobs:
             arch: ARM64
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -69,7 +69,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build
-        run: | 
+        run: |
             echo "Building the DDS WN package..."
             cmake --build ${{ steps.strings.outputs.build-output-dir }} --target wn_bin --parallel ${{ matrix.jobs }} --config ${{ matrix.build_type }}
             echo "Building DDS and installing in " ${{ steps.strings.outputs.install-dir }}
