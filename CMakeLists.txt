@@ -67,7 +67,7 @@ if( EXISTS "${CMAKE_SOURCE_DIR}/.git" )
 	# The command produce a verion like "X.Y.Z.gHASH"
 	# The hash suffix is "-g" + 7-char abbreviation for the tip commit of parent.
 	# The "g" prefix stands for "git" and is used to allow describing the version of a software depending on the SCM the software is managed with.
-  execute_process(COMMAND git --git-dir "${CMAKE_SOURCE_DIR}/.git" describe --match "[0-9]*\\.[0-9]*" --abbrev=7 HEAD
+  execute_process(COMMAND git --git-dir "${CMAKE_SOURCE_DIR}/.git" describe --tags --match "[0-9]*\\.[0-9]*" --abbrev=7 HEAD
                   COMMAND sed -e "s/-/./g"
                   OUTPUT_VARIABLE DDS_VERSION
                   OUTPUT_STRIP_TRAILING_WHITESPACE)
