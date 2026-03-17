@@ -264,7 +264,7 @@ SET(DDS_SHARE_FILES
 #
 # Note: Starting with Boost 1.69+, system library is header-only and may not be available as a separate component
 # in modern CMake configurations. We handle this by trying CONFIG mode first, then falling back to MODULE mode.
-set(Boost_Components log log_setup thread program_options filesystem regex process)
+set(Boost_Components log log_setup thread program_options filesystem regex)
 if(BUILD_TESTS)
   set(Boost_Components ${Boost_Components} unit_test_framework)
 endif(BUILD_TESTS)
